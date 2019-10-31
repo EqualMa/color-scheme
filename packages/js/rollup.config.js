@@ -1,7 +1,9 @@
+import pkg from "./package.json";
 import resolve from "rollup-plugin-node-resolve";
 import commonjs from "rollup-plugin-commonjs";
-import pkg from "./package.json";
+import { DEFAULT_EXTENSIONS } from "@babel/core";
 import typescript from "rollup-plugin-typescript2";
+import babel from "rollup-plugin-babel";
 
 const input = "src/index.ts";
 
@@ -20,6 +22,10 @@ export default [
         tsconfig: "./tsconfig.prod.json",
       }),
       commonjs(), // so Rollup can convert packages in node_modules to an ES module
+      babel({
+        extensions: [...DEFAULT_EXTENSIONS, ".ts", ".tsx"],
+        exclude: "node_modules/**",
+      }),
     ],
   },
 
