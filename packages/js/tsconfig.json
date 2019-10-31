@@ -1,0 +1,15 @@
+{
+  // for node and dev
+  "extends": "./tsconfig.base.json",
+
+  "compilerOptions": {
+    // "checkJs": true,
+    // "allowJs": true,
+    "target": "es6",
+    "module": "commonjs"
+  },
+
+  "include": ["src/**/*.ts", "test/**/*.ts", "*.ts"]
+  // "include": ["**/*"],
+  // "exclude": ["node_modules", "dist"]
+}
