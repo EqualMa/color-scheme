@@ -8,6 +8,8 @@
     "ms": "^2.0.0"
   },
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^2.6.0",
+    "@typescript-eslint/parser": "^2.6.0",
     "eslint": "^6.6.0",
     "eslint-config-prettier": "^6.5.0",
     "eslint-plugin-prettier": "^3.1.1",
@@ -21,7 +23,13 @@
     "build": "rollup -c",
     "dev": "rollup -c -w",
     "test": "node test/test.js",
-    "pretest": "npm run build"
+    "pretest": "npm run build",
+    "lint": "eslint --ext .js,.jsx,.ts,.tsx",
+    "lint:fix": "eslint --ext .js,.jsx,.ts,.tsx --fix",
+    "lint-all": "yarn run lint .",
+    "lint-all:fix": "yarn run lint:fix .",
+    "typecheck": "tsc --noEmit",
+    "format": "prettier --write"
   },
   "files": [
     "dist"
