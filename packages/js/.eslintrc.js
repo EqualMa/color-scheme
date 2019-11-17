@@ -5,9 +5,12 @@ module.exports = {
     "plugin:@typescript-eslint/recommended",
     "plugin:prettier/recommended",
     // "prettier",
-    "prettier/@typescript-eslint"
+    "prettier/@typescript-eslint",
   ],
+  rules: {
+    "@typescript-eslint/explicit-function-return-type": "off",
+  },
   parserOptions: {
-    project: "./tsconfig.json"
-  }
+    project: "./tsconfig.json",
+  },
 };

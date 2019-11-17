@@ -1,9 +1,10 @@
 {
   "name": "@color-scheme/js",
   "version": "1.0.0",
-  "main": "dist/how-long-till-lunch.cjs.js",
-  "module": "dist/how-long-till-lunch.esm.js",
-  "browser": "dist/how-long-till-lunch.umd.js",
+  "license": "MIT",
+  "main": "dist/color-scheme.cjs.js",
+  "module": "dist/color-scheme.esm.js",
+  "browser": "dist/color-scheme.umd.js",
   "dependencies": {
     "core-js": "^3.3.5"
   },
