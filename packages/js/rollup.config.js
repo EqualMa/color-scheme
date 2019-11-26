@@ -1,47 +1,85 @@
-import pkg from "./package.json";
+/* eslint-env node */
 import resolve from "rollup-plugin-node-resolve";
+import externals from "rollup-plugin-node-externals";
 import commonjs from "rollup-plugin-commonjs";
 import { DEFAULT_EXTENSIONS } from "@babel/core";
 import typescript from "rollup-plugin-typescript2";
 import babel from "rollup-plugin-babel";
+import { terser } from "rollup-plugin-terser";
+import * as glob from "glob";
+import * as path from "path";
 
-const input = "src/index.ts";
+const isProduction = process.env.NODE_ENV === "production";
 
-export default [
-  // browser-friendly UMD build
-  {
-    input,
+const EXCLUDED_FROM_ENTRIES = ["core"];
+
+const extractModuleName = file => path.relative("src", path.dirname(file));
+
+const otherEntries = {
+  ...glob
+    .sync("src/*/index.ts")
+    .map(p => [extractModuleName(p), p])
+    .filter(p => !EXCLUDED_FROM_ENTRIES.includes(p[0]))
+    .reduce((obj, [name, file]) => ({ ...obj, [name]: file }), {}),
+};
+
+const mainEntry = "src/core/index.ts";
+
+const input = ({ bundle }) =>
+  bundle
+    ? {
+      ...otherEntries,
+      "color-scheme": mainEntry,
+    }
+    : {
+      ...otherEntries,
+      index: mainEntry,
+    };
+
+const POLYFILL_DIR = path.dirname(require.resolve('core-js'))
+const isPolyfill = id =>
+  path.resolve(id).startsWith(POLYFILL_DIR)
+
+
+export const config = ({ format, min = false, bundle = false }) => {
+  const postfix = `${bundle ? ".bundle" : ""}${min ? ".min" : ""}.js`;
+  return {
+    input: input({ bundle }),
     output: {
-      name: "howLongUntilLunch",
-      file: pkg.browser,
-      format: "umd",
+      dir: "dist/" + (bundle ? "bundle/" : "") + format,
+      entryFileNames: "[name]" + postfix,
+      chunkFileNames: "chunk-[name]" + postfix,
+      format,
+      sourcemap: isProduction,
+    },
+    manualChunks(id) {
+      if (isPolyfill(id)) {
+        return 'polyfill';
+      }
     },
     plugins: [
-      resolve(), // so Rollup can find packages in node_modules
+      // https://github.com/Septh/rollup-plugin-node-externals
+      !bundle &&
+      externals({
+        deps: true,
+        peerDeps: true,
+      }),
+      bundle && resolve(),
       typescript({
         tsconfig: "./tsconfig.prod.json",
+        clean: true,
       }),
-      commonjs(), // so Rollup can convert packages in node_modules to an ES module
+      bundle && commonjs(),
       babel({
         extensions: [...DEFAULT_EXTENSIONS, ".ts", ".tsx"],
         exclude: "node_modules/**",
       }),
+      min && terser(),
     ],
-  },
-
-  // CommonJS (for Node) and ES module (for bundlers) build.
-  // (We could have three entries in the configuration array
-  // instead of two, but it's quicker to generate multiple
-  // builds from a single configuration where possible, using
-  // an array for the `output` option, where we can specify
-  // `file` and `format` for each target)
-  {
-    input,
-    // TODO: auto-external
-    external: [],
-    output: [
-      { file: pkg.main, format: "cjs" },
-      { file: pkg.module, format: "es" },
-    ],
-  },
-];
+  };
+};
+export default [
+  { format: "esm", min: false, bundle: false },
+  { format: "esm", min: false, bundle: true },
+  // { format: "esm", min: true, bundle: true },
+].map(config);

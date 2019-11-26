@@ -1,8 +1,10 @@
-export function lazy<T>(gen: () => T): () => T {
+export function lazy<T>(gen: (clear: () => void) => T): () => T {
   let v!: T;
   let assigned = false;
-
-  return (): T => {
-    return assigned ? v : (assigned = true) && (v = gen());
+  const clear = () => {
+    (v as unknown) = undefined;
+    assigned = false;
   };
+
+  return (): T => (assigned ? v : (assigned = true) && (v = gen(clear)));
 }

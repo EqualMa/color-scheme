@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "importHelpers": true,
     "experimentalDecorators": true,
     "target": "esnext",
     "module": "esnext",
@@ -8,6 +9,5 @@
     "strict": true,
     "sourceMap": true
   },
-
   "include": []
 }

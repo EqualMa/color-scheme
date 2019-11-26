@@ -6,7 +6,7 @@
   "module": "dist/color-scheme.esm.js",
   "browser": "dist/color-scheme.umd.js",
   "dependencies": {
-    "core-js": "^3.3.5"
+    "tslib": "^1.10.0"
   },
   "devDependencies": {
     "@babel/core": "^7.6.4",
@@ -20,8 +20,10 @@
     "rollup": "^1.26.0",
     "rollup-plugin-babel": "^4.3.3",
     "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-node-externals": "^2.1.2",
     "rollup-plugin-node-resolve": "^5.2.0",
-    "rollup-plugin-typescript2": "^0.24.3",
+    "rollup-plugin-terser": "^5.1.2",
+    "rollup-plugin-typescript2": "^0.25.2",
     "typescript": "^3.6.4"
   },
   "scripts": {
@@ -40,5 +42,8 @@
   },
   "files": [
     "dist"
-  ]
+  ],
+  "peerDependencies": {
+    "core-js": "^3.4.2"
+  }
 }

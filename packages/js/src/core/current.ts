@@ -1,110 +1,58 @@
-import { PREFERS_COLOR_SCHEME_NAMES, PrefersColorScheme } from "./prefers";
-import { matchPrefers } from "./media-query";
-import { lazy } from "../util/lazy";
+import {
+  PREFERS_COLOR_SCHEME_NAMES,
+  PrefersColorScheme,
+} from "./prefers-color-scheme";
+import { ValueChangeListener, Unlisten } from "./types";
+import { listenPrefers, prefers } from "./prefers";
 
-export interface ObservableValue<T> {
-  readonly observable: Observable<T>;
-  readonly value: T;
-}
-
-let queries:
-  | {
-      [K in PrefersColorScheme]?: ObservableValue<boolean>;
-    }
-  | undefined;
-
-export function prefers(cs: PrefersColorScheme): ObservableValue<boolean> {
-  if (!queries) {
-    queries = {};
-  }
-
-  if (queries[cs]) {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    return queries[cs]!;
-  }
-
-  const query = matchPrefers(cs);
-
-  let value!: boolean;
-  const ob = new Observable<boolean>(observer => {
-    const handler = (e: MediaQueryList | MediaQueryListEvent) =>
-      observer.next((value = e.matches));
-
-    handler(query);
-
-    query.addEventListener("change", handler);
-
-    // Return a cleanup function which will cancel the event stream
-    return () => {
-      // Detach the event handler
-      query.removeEventListener("change", handler);
-      if (queries) queries[cs] = undefined;
-    };
-  });
-
-  const obj: ObservableValue<boolean> = {
-    get observable() {
-      return ob;
-    },
-    get value() {
-      return value;
-    },
-  };
-
-  return (queries[cs] = obj);
-}
-
-function genPrefersColorScheme(): ObservableValue<PrefersColorScheme> {
-  let currentValue: PrefersColorScheme | undefined = undefined;
+export function listenCurrent(
+  listener: ValueChangeListener<PrefersColorScheme>,
+  emitCurrentValue = false,
+): Unlisten {
   let oldValue: PrefersColorScheme | undefined = undefined;
+  let curValue: PrefersColorScheme | undefined = undefined;
 
-  const ob = new Observable<PrefersColorScheme>(observer => {
-    let checking: undefined | Promise<void> = undefined;
+  let updater: unknown = undefined;
+  const update = () =>
+    setTimeout(() => {
+      if (curValue !== oldValue) {
+        oldValue = curValue;
+        updater = undefined;
 
-    const check = async () => {
-      if (currentValue !== oldValue) {
-        oldValue = currentValue;
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        observer.next(currentValue!);
+        if (curValue === undefined) throw new Error("Invalid state");
+
+        listener(curValue);
       }
-      checking = undefined;
-    };
+    }, 0) || true;
 
-    const subscriptions = PREFERS_COLOR_SCHEME_NAMES.map(cs => {
-      const obv = prefers(cs);
-      return obv.observable.subscribe({
-        next(v: boolean) {
-          if (v) currentValue = cs;
-          else if (currentValue === cs) {
-            currentValue = undefined;
+  const unlisteners = PREFERS_COLOR_SCHEME_NAMES.map(cs =>
+    listenPrefers(
+      cs,
+      v => {
+        if (v || curValue === cs) {
+          curValue = v ? cs : undefined;
+          if (!updater) {
+            updater = update();
           }
+        }
+      },
+      emitCurrentValue,
+    ),
+  );
 
-          if (currentValue !== oldValue && !checking) {
-            checking = check();
-          }
-        },
-      });
-    });
-
-    // Return a cleanup function which will cancel the event stream
-    return () => {
-      for (const sub of subscriptions) {
-        sub.unsubscribe();
-      }
-    };
-  });
-
-  return {
-    get observable() {
-      return ob;
-    },
-    get value() {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      return currentValue!;
-    },
+  return () => {
+    for (const unlsn of unlisteners) {
+      unlsn();
+    }
   };
 }
 
-export const prefersColorScheme: () => ObservableValue<
-  PrefersColorScheme
-> = lazy(genPrefersColorScheme);
+export function current(): PrefersColorScheme {
+  for (const cs of PREFERS_COLOR_SCHEME_NAMES) {
+    if (prefers(cs)) {
+      return cs;
+    }
+  }
+
+  throw new Error("Unexpected value for media: prefers-color-scheme");
+}
