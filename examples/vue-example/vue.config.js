@@ -1,7 +1,7 @@
-const IS_GITPOD = !!process.env.GITPOD_HOST
+const IS_GITPOD = !!process.env.GITPOD_HOST;
 
 module.exports = {
   devServer: {
-    disableHostCheck: IS_GITPOD
-  }
-}
+    disableHostCheck: IS_GITPOD,
+  },
+};
