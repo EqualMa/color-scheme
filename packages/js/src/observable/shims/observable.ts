@@ -1,7 +1,10 @@
+import { Observer } from "./observer";
+import { SubscriptionObserver, SubscriberFunction, Subscription } from "./subscription";
+
 /**
  * @see https://github.com/tc39/proposal-observable#observable
  */
-declare class Observable<T> {
+declare class ObservableClass<T> {
   constructor(subscriber: SubscriberFunction<T>);
 
   // Subscribes to the sequence with an observer
@@ -24,13 +27,5 @@ declare class Observable<T> {
   public static from<V>(observable: Iterable<V> | Observable<V>): Observable<V>;
 }
 
-interface Subscription {
-  // Cancels the subscription
-  unsubscribe(): void;
-  // A boolean value indicating whether the subscription is closed
-  readonly closed: boolean;
-}
-
-type SubscriberFunction<T> = (
-  observer: SubscriptionObserver<T>,
-) => (() => void) | Subscription;
+export type Observable<T> = ObservableClass<T>
+export type ObservableCtor = typeof ObservableClass

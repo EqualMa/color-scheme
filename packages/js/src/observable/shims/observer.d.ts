@@ -1,4 +1,6 @@
-interface Observer<T> {
+import { Subscription } from "./subscription";
+
+export interface Observer<T> {
   // Receives the subscription object when `subscribe` is called
   start(subscription: Subscription): void;
 
