@@ -1,5 +1,5 @@
 import { Observer } from "./observer";
-import { SubscriptionObserver, SubscriberFunction, Subscription } from "./subscription";
+import { SubscriberFunction, Subscription } from "./subscription";
 
 /**
  * @see https://github.com/tc39/proposal-observable#observable
@@ -27,5 +27,5 @@ declare class ObservableClass<T> {
   public static from<V>(observable: Iterable<V> | Observable<V>): Observable<V>;
 }
 
-export type Observable<T> = ObservableClass<T>
-export type ObservableCtor = typeof ObservableClass
+export type Observable<T> = ObservableClass<T>;
+export type ObservableCtor = typeof ObservableClass;

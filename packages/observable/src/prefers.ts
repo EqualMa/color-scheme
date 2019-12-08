@@ -1,16 +1,18 @@
 import { PrefersColorScheme, listenPrefers } from "@color-scheme/js";
 import { ObservableValue } from "./types";
 import { initColorSchemeDict } from "@color-scheme/js";
-import { Observable } from './shims';
-import { getDefaultObservableCtor } from './polyfill';
+import { Observable } from "./shims";
+import { getDefaultObservableCtor } from "./polyfill";
 
 let obs:
   | Record<PrefersColorScheme, ObservableValue<boolean> | undefined>
   | undefined = undefined;
 
-export function prefers<TBooleanObservable = Observable<boolean>>(cs: PrefersColorScheme): ObservableValue<boolean, TBooleanObservable>
+export function prefers<TBooleanObservable = Observable<boolean>>(
+  cs: PrefersColorScheme,
+): ObservableValue<boolean, TBooleanObservable>;
 export function prefers(cs: PrefersColorScheme): ObservableValue<boolean> {
-  const Observable = getDefaultObservableCtor()
+  const Observable = getDefaultObservableCtor();
 
   if (!obs) obs = initColorSchemeDict();
 

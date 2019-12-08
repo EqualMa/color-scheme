@@ -1,4 +1,4 @@
-import { Observable } from './shims'
+import { Observable } from "./shims";
 
 export interface ObservableValue<T, TObservable = Observable<T>> {
   readonly observable: TObservable;

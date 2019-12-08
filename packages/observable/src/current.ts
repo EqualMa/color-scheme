@@ -2,13 +2,13 @@ import { ObservableValue } from "./types";
 
 import { PrefersColorScheme, listenCurrent, lazy } from "@color-scheme/js";
 
-import { getDefaultObservableCtor } from './polyfill';
-import { Observable } from './shims';
+import { getDefaultObservableCtor } from "./polyfill";
+import { Observable } from "./shims";
 
 function genPrefersColorScheme(
   clean: () => void,
 ): ObservableValue<PrefersColorScheme> {
-  const Observable = getDefaultObservableCtor()
+  const Observable = getDefaultObservableCtor();
 
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   let value!: PrefersColorScheme;
@@ -36,6 +36,10 @@ function genPrefersColorScheme(
   };
 }
 
-export const current: <TPrefersColorSchemeObservable = Observable<PrefersColorScheme>>() => ObservableValue<PrefersColorScheme, TPrefersColorSchemeObservable> = lazy(
-  genPrefersColorScheme,
-) as any;
+export const current: <TPrefersColorSchemeObservable = Observable<
+  PrefersColorScheme
+>>() => ObservableValue<
+  PrefersColorScheme,
+  TPrefersColorSchemeObservable
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+> = lazy(genPrefersColorScheme) as any;
