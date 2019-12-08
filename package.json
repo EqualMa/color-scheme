@@ -2,7 +2,9 @@
   "name": "root",
   "private": true,
   "workspaces": [
-    "packages/*"
+    "tools/*",
+    "packages/*",
+    "examples/*"
   ],
   "devDependencies": {
     "husky": ">=1",
@@ -15,6 +17,9 @@
     "hooks": {
       "pre-commit": "lint-staged && lerna run --concurrency 1 --stream precommit"
     }
+  },
+  "scripts": {
+    "build": "lerna run build"
   },
   "lint-staged": {
     "*.{yml,yaml,json,md,html}": [
