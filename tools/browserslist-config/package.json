@@ -6,6 +6,11 @@
   "repository": "https://github.com/Equal/color-scheme/packages/browserslist-config",
   "author": "Equal Ma",
   "license": "MIT",
+  "scripts": {
+    "precommit": "lint-staged",
+    "gen": "node gen.js && yarn run format index.js",
+    "format": "prettier --write"
+  },
   "devDependencies": {
     "browserslist": "^4.8.0",
     "caniuse-api": "^3.0.0"

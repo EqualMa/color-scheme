@@ -7,5 +7,5 @@ module.exports = [
   "firefox >= 67",
   "ios_saf >= 13",
   "opera >= 62",
-  "safari >= 12.1"
+  "safari >= 12.1",
 ];
