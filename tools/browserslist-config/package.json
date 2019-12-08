@@ -1,0 +1,13 @@
+{
+  "name": "@color-scheme/browserslist-config",
+  "version": "1.0.0",
+  "description": "browserslist for @color-scheme projects",
+  "main": "index.js",
+  "repository": "https://github.com/Equal/color-scheme/packages/browserslist-config",
+  "author": "Equal Ma",
+  "license": "MIT",
+  "devDependencies": {
+    "browserslist": "^4.8.0",
+    "caniuse-api": "^3.0.0"
+  }
+}
