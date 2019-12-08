@@ -2,6 +2,6 @@
   - "yarn run format"
   - "git add"
 
-"(!.eslintrc).{js,jsx,ts,tsx}":
+"!(.eslintrc).{js,jsx,ts,tsx}":
   - "yarn run lint:fix --max-warnings 0"
   - git add

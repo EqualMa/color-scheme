@@ -2,7 +2,7 @@ import { PrefersColorScheme } from "./prefers-color-scheme";
 import { ValueChangeListener, Unlisten } from "./types";
 import { matchPrefers, addListenerToMediaQueryList } from "./media-query";
 import { initColorSchemeDict } from "./util";
-import { SimpleSet } from '../util/simple-set';
+import { SimpleSet } from "../util/simple-set";
 
 type Queries = { [K in PrefersColorScheme]: Query | undefined };
 interface Query {
