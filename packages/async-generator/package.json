@@ -1,5 +1,5 @@
 {
-  "name": "@color-scheme/js",
+  "name": "@color-scheme/async-generator",
   "version": "1.0.0",
   "license": "MIT",
   "types": "dist/esnext/index.d.ts",
@@ -7,6 +7,7 @@
   "module": "dist/esm/index.js",
   "esnext": "dist/esnext/index.js",
   "dependencies": {
+    "@color-scheme/js": "^1.0.0",
     "tslib": "^1.10.0"
   },
   "devDependencies": {
@@ -21,7 +22,6 @@
     "eslint": "^6.6.0",
     "eslint-config-prettier": "^6.5.0",
     "eslint-plugin-prettier": "^3.1.1",
-    "rollup": "^1.26.0",
     "typescript": "^3.6.4"
   },
   "scripts": {
@@ -29,8 +29,6 @@
     "clean": "rimraf dist",
     "build": "yarn run clean && rollup -c",
     "dev": "rollup -c -w",
-    "test": "node test/test.js",
-    "pretest": "npm run build",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx",
     "lint:fix": "eslint --ext .js,.jsx,.ts,.tsx --fix",
     "lint-all": "yarn run lint .",
@@ -42,6 +40,6 @@
     "core-js": "^3.4.2"
   },
   "publishConfig": {
-    "directory": "dist/esm"
+    "directory": "dist"
   }
 }

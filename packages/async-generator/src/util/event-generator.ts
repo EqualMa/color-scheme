@@ -1,4 +1,4 @@
-import { Unlisten, ValueChangeListenerHandler } from "../core/types";
+import { Unlisten, ValueChangeListenerHandler } from "@color-scheme/js";
 
 export class ValueChangeEventGenerator<T>
   implements AsyncGenerator<T, void, boolean> {

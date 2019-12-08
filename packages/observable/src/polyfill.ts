@@ -1,4 +1,4 @@
-import { Observable, ObservableCtor } from './shims'
+import { ObservableCtor } from './shims'
 
 declare global {
   const Observable: ObservableCtor | undefined

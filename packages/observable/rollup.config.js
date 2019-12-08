@@ -10,11 +10,11 @@ const mainEntry = "src/index.ts";
 export const input = ({ bundle }) =>
   bundle
     ? {
-      "color-scheme": mainEntry,
+      "color-scheme-observable": mainEntry,
     }
     : mainEntry;
 
-const GLOBAL_LIB_NAME = "colorScheme";
+const GLOBAL_LIB_NAME = "colorSchemeObservable";
 
 const output = cfg => {
   const { format, min, bundle, esnext } = cfg;

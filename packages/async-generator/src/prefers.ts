@@ -1,4 +1,4 @@
-import { PrefersColorScheme, listenPrefers } from "../core";
+import { PrefersColorScheme, listenPrefers } from "@color-scheme/js";
 import { ValueChangeEventGenerator } from "./util/event-generator";
 
 export function prefers(

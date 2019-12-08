@@ -2,11 +2,12 @@ import { PrefersColorScheme } from "./prefers-color-scheme";
 import { ValueChangeListener, Unlisten } from "./types";
 import { matchPrefers, addListenerToMediaQueryList } from "./media-query";
 import { initColorSchemeDict } from "./util";
+import { SimpleSet } from '../util/simple-set';
 
 type Queries = { [K in PrefersColorScheme]: Query | undefined };
 interface Query {
   mql: MediaQueryList;
-  listeners: Set<ValueChangeListener<boolean>>;
+  listeners: SimpleSet<ValueChangeListener<boolean>>;
   readonly value: boolean;
   clean: () => void;
 }
@@ -17,7 +18,7 @@ function initQuery(cs: PrefersColorScheme): Query {
   const mql = matchPrefers(cs);
 
   let value = mql.matches;
-  const listeners = new Set<ValueChangeListener<boolean>>();
+  const listeners = new SimpleSet<ValueChangeListener<boolean>>();
 
   const unlisten = addListenerToMediaQueryList(mql, ev => {
     if (ev.matches !== value) {

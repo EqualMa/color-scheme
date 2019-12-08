@@ -1,6 +1,6 @@
-import { PrefersColorScheme, listenPrefers } from "../core";
+import { PrefersColorScheme, listenPrefers } from "@color-scheme/js";
 import { ObservableValue } from "./types";
-import { initColorSchemeDict } from "../core";
+import { initColorSchemeDict } from "@color-scheme/js";
 import { Observable } from './shims';
 import { getDefaultObservableCtor } from './polyfill';
 

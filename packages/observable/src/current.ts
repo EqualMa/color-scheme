@@ -1,8 +1,7 @@
 import { ObservableValue } from "./types";
 
-import { PrefersColorScheme, listenCurrent } from "../core";
+import { PrefersColorScheme, listenCurrent, lazy } from "@color-scheme/js";
 
-import { lazy } from "../util/lazy";
 import { getDefaultObservableCtor } from './polyfill';
 import { Observable } from './shims';
 
