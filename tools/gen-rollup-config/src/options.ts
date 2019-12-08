@@ -6,10 +6,13 @@ export type PartialGenOptions = Pick<
   Exclude<keyof GenRollupConfigOptions, "input" | "output">
 >;
 
-export const OPTION_ESNEXT: PartialGenOptions = { format: "esm", esnext: true, emitTsDeclaration: true };
+export const OPTION_ESNEXT: PartialGenOptions = {
+  format: "esm", esnext: true, emitTsDeclaration: true,
+  preserveModules: true
+};
 
 export const OPTION_MAIN_AND_MODULE: PartialGenOptions = {
-  format: ["esm", "cjs"],
+  format: ["esm", "cjs"], preserveModules: true
 };
 
 export const OPTIONS_BROWSER: readonly PartialGenOptions[] = [

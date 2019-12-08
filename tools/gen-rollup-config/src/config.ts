@@ -16,8 +16,8 @@ import {
 export interface GenRollupConfigOptions {
   input: InputOption;
   output:
-    | OutputOptions
-    | ((opt: GenRollupConfigOptionsWithSingleFormat) => OutputOptions);
+  | OutputOptions
+  | ((opt: GenRollupConfigOptionsWithSingleFormat) => OutputOptions);
 
   min?: boolean;
   bundle?: boolean;
@@ -52,6 +52,8 @@ export interface GenRollupConfigOptions {
   tsconfigFile?: string;
 
   emitTsDeclaration?: boolean;
+
+  preserveModules?: boolean
 }
 
 export interface GenRollupConfigOptionsWithSingleFormat
@@ -70,31 +72,34 @@ export const config: (opt: GenRollupConfigOptions) => RollupOptions = opt => {
 
     tsconfigFile = "./tsconfig.prod.json",
     emitTsDeclaration = false,
+
+    preserveModules = false,
   } = opt;
 
   const genOutput: (
     c: GenRollupConfigOptionsWithSingleFormat,
   ) => OutputOptions = c =>
-    typeof output === "function" ? output(c) : { format: c.format, ...output };
+      typeof output === "function" ? output(c) : { format: c.format, ...output };
 
-  return {
+  const cfg: RollupOptions = {
     input,
     output: Array.isArray(format)
       ? format.map(f => genOutput({ ...opt, format: f }))
       : genOutput(opt as GenRollupConfigOptionsWithSingleFormat),
+    preserveModules,
     plugins: [
       // if the output is a bundle, then deps are resolved to be included in the output
       // else, the deps are marked as as external modules and won't be included in the output
       bundle
         ? resolve({
-            // https://github.com/rollup/plugins/tree/master/packages/node-resolve
-            mainFields: ["module", "main"],
-          })
+          // https://github.com/rollup/plugins/tree/master/packages/node-resolve
+          mainFields: ["module", "main"],
+        })
         : externals({
-            // https://github.com/Septh/rollup-plugin-node-externals
-            deps: true,
-            peerDeps: true,
-          }),
+          // https://github.com/Septh/rollup-plugin-node-externals
+          deps: true,
+          peerDeps: true,
+        }),
       typescript({
         tsconfig: tsconfigFile,
         tsconfigOverride: {
@@ -104,11 +109,12 @@ export const config: (opt: GenRollupConfigOptions) => RollupOptions = opt => {
       }),
       bundle && commonjs(),
       !esnext &&
-        babel({
-          extensions: [...DEFAULT_EXTENSIONS, ".ts", ".tsx"],
-          exclude: "node_modules/**",
-        }),
+      babel({
+        extensions: [...DEFAULT_EXTENSIONS, ".ts", ".tsx"],
+        exclude: "node_modules/**",
+      }),
       min && terser(),
     ],
   };
+  return cfg
 };
