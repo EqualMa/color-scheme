@@ -1,0 +1,49 @@
+{
+  "name": "@color-scheme/gen-rollup-config",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "author": "Equal Ma",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/core": "^7.7.5",
+    "@typescript-eslint/eslint-plugin": "^2.10.0",
+    "@typescript-eslint/parser": "^2.10.0",
+    "eslint": "^6.7.2",
+    "eslint-plugin-node": "^10.0.0",
+    "eslint-plugin-prettier": "^3.1.1",
+    "husky": ">=1",
+    "lerna": "^3.18.3",
+    "lint-staged": ">=8",
+    "rollup": "^1.27.8",
+    "typescript": "^3.7.3"
+  },
+  "engines": {
+    "node": ">=10"
+  },
+  "scripts": {
+    "precommit": "lint-staged",
+    "clean": "rimraf dist",
+    "build": "yarn run clean && tsc",
+    "test": "yarn run typecheck && echo 'unit test not available'",
+    "lint": "eslint --ext .js,.jsx,.ts,.tsx",
+    "lint:fix": "eslint --ext .js,.jsx,.ts,.tsx --fix",
+    "lint-all": "yarn run lint .",
+    "lint-all:fix": "yarn run lint:fix .",
+    "typecheck": "tsc --noEmit",
+    "format": "prettier --write"
+  },
+  "dependencies": {
+    "@rollup/plugin-node-resolve": "^6.0.0",
+    "rollup-plugin-babel": "^4.3.3",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-node-externals": "^2.1.2",
+    "rollup-plugin-terser": "^5.1.2",
+    "rollup-plugin-typescript2": "^0.25.3"
+  },
+  "peerDependencies": {
+    "@babel/core": "^7.7.5",
+    "rollup": "^1.27.8",
+    "typescript": "^3.7.3"
+  }
+}

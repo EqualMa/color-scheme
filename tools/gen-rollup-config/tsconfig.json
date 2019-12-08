@@ -1,0 +1,17 @@
+{
+  // for node and dev
+  "extends": "@color-scheme/js/tsconfig.base.json",
+  "compilerOptions": {
+    "target": "es6",
+    "lib": ["DOM", "ES6", "DOM.Iterable", "ScriptHost"],
+    "esModuleInterop": true,
+    "module": "commonjs",
+    "outDir": "dist",
+    "sourceMap": true,
+    "declaration": true,
+    "declarationMap": true
+  },
+  "include": ["src/**/*.ts", "test/**/*.ts", "*.ts", "*.js"]
+  // "include": ["**/*"],
+  // "exclude": ["node_modules", "dist"]
+}
