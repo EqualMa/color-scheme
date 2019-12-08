@@ -1,9 +1,11 @@
 {
-  "name": "vue-color-scheme",
-  "version": "0.0.1",
+  "name": "@color-scheme/vue",
+  "version": "1.0.0",
   "description": "Vue Plugin Boilerplate",
-  "main": "dist/vue-color-scheme.js",
-  "types": "src/types/index.d.ts",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "esnext": "dist/esnext/index.js",
+  "types": "src/esnext/index.d.ts",
   "files": [
     "dist",
     "src",
@@ -13,18 +15,16 @@
     "test": "exit 0;",
     "storybook": "start-storybook",
     "precommit": "lint-staged",
-    "build": "cross-env NODE_ENV=production webpack --config webpack.config.js",
+    "clean": "rimraf dist",
+    "build": "yarn run clean && rollup -c",
+    "dev": "rollup -c -w",
+    "lint": "eslint --ext .js,.jsx,.ts,.tsx",
+    "lint:fix": "eslint --ext .js,.jsx,.ts,.tsx --fix",
+    "lint-all": "yarn run lint .",
+    "lint-all:fix": "yarn run lint:fix .",
+    "typecheck": "tsc --noEmit",
+    "format": "prettier --write",
     "example:kitchensink": "poi -s examples/kitchensink/index.js"
-  },
-  "lint-staged": {
-    "src/**/*.js": [
-      "prettier --single-quote --write",
-      "git add"
-    ],
-    "examples/**/*.js": [
-      "prettier --single-quote --write",
-      "git add"
-    ]
   },
   "repository": {
     "type": "git",
@@ -32,9 +32,8 @@
   },
   "keywords": [
     "vue",
-    "querystring",
-    "state",
-    "sync"
+    "color sheme",
+    "prefers-color-scheme"
   ],
   "author": "Fatih Kadir Akin <fatihkadirakin@gmail.com>",
   "license": "MIT",
@@ -46,33 +45,21 @@
     "@color-scheme/js": "^1.0.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.5.5",
-    "@babel/plugin-proposal-class-properties": "^7.5.5",
-    "@babel/plugin-transform-runtime": "^7.5.5",
-    "@babel/preset-env": "^7.5.5",
-    "@storybook/addon-notes": "^5.1.10",
-    "@storybook/vue": "^5.1.10",
-    "babel-loader": "^8.0.6",
-    "babel-preset-vue": "^2.0.2",
-    "cross-env": "^5.2.0",
+    "@babel/core": "^7.6.4",
+    "@babel/preset-env": "^7.6.3",
+    "@babel/register": "^7.6.2",
+    "@color-scheme/browserslist-config": "1.0.0",
+    "@color-scheme/gen-rollup-config": "*",
+    "core-js": "^3.4.2",
     "eslint": "^6.1.0",
     "eslint-config-prettier": "^6.0.0",
     "eslint-plugin-prettier": "^3.1.0",
-    "husky": "^3.0.2",
-    "lint-staged": "^9.2.1",
     "poi": "^12.7.1",
-    "prettier": "^1.18.2",
-    "uglifyjs-webpack-plugin": "^2.2.0",
-    "vue": "^2.6.10",
-    "vue-html-loader": "^1.2.4",
-    "vue-loader": "^15.7.1",
-    "vue-style-loader": "^4.1.2",
-    "vue-template-compiler": "^2.6.10",
-    "vuex": "^3.1.1",
-    "webpack": "^4.39.1",
-    "webpack-cli": "^3.3.6"
+    "rollup": "^1.27.8",
+    "vue": "^2.6.10"
   },
   "peerDependencies": {
+    "core-js": "^3.4.2",
     "vue": "^2.6.10"
   }
 }

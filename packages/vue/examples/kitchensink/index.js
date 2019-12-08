@@ -1,15 +1,14 @@
-import Vue from 'vue';
-import Vuex from 'vuex';
-import VueColorSchemePlugin from '@/vue-color-scheme';
+import Vue from "vue";
+import Vuex from "vuex";
+import VueColorSchemePlugin from "@color-scheme/vue";
 
-import App from './App.vue';
+import App from "./App.vue";
 
 Vue.use(Vuex);
 Vue.use(VueColorSchemePlugin);
 
 new Vue({
-  el: '#app',
+  el: "#app",
   store: new Vuex.Store(),
-  colorSchemeSettings: new VueColorSchemePlugin(),
-  render: createElement => createElement(App)
+  render: createElement => createElement(App),
 });

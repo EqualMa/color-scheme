@@ -1,14 +1,15 @@
 module.exports = {
-  root: true,
-  parserOptions: {
-    sourceType: 'module'
-  },
-
-  extends: ['airbnb', 'prettier'],
-  // required to lint *.vue files
-  plugins: ['prettier', 'html'],
-
+  extends: [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended",
+    "prettier/@typescript-eslint",
+  ],
   rules: {
-    'prettier/prettier': ['error']
-  }
+    "@typescript-eslint/explicit-function-return-type": "off",
+  },
+  parserOptions: {
+    project: "./tsconfig.json",
+  },
 };
