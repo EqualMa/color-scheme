@@ -5,7 +5,7 @@
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "esnext": "dist/esnext/index.js",
-  "types": "src/esnext/index.d.ts",
+  "types": "dist/esnext/index.d.ts",
   "files": [
     "dist",
     "src",
