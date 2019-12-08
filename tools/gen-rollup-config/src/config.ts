@@ -45,6 +45,13 @@ export interface GenRollupConfigOptions {
    *     `opt.format.map(f => ({...opt.output, format: f}))` will be used as output options
    */
   format?: ModuleFormat | readonly ModuleFormat[];
+
+  /**
+   * @default "./tsconfig.prod.json"
+   */
+  tsconfigFile?: string;
+
+  emitTsDeclaration?: boolean;
 }
 
 export interface GenRollupConfigOptionsWithSingleFormat
@@ -60,6 +67,9 @@ export const config: (opt: GenRollupConfigOptions) => RollupOptions = opt => {
     min = false,
     bundle = false,
     esnext = false,
+
+    tsconfigFile = "./tsconfig.prod.json",
+    emitTsDeclaration = false,
   } = opt;
 
   const genOutput: (
@@ -86,7 +96,10 @@ export const config: (opt: GenRollupConfigOptions) => RollupOptions = opt => {
             peerDeps: true,
           }),
       typescript({
-        tsconfig: "./tsconfig.prod.json",
+        tsconfig: tsconfigFile,
+        tsconfigOverride: {
+          compilerOptions: { declaration: emitTsDeclaration },
+        },
         clean: true,
       }),
       bundle && commonjs(),
