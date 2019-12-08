@@ -13,11 +13,13 @@ import {
   RollupOptions,
 } from "rollup";
 
+import { assertSameObject, assertAllUndefinded } from "./utils/asserts";
+
 export interface GenRollupConfigOptions {
   input: InputOption;
   output:
-  | OutputOptions
-  | ((opt: GenRollupConfigOptionsWithSingleFormat) => OutputOptions);
+    | OutputOptions
+    | ((opt: GenRollupConfigOptionsWithSingleFormat) => OutputOptions);
 
   min?: boolean;
   bundle?: boolean;
@@ -53,7 +55,7 @@ export interface GenRollupConfigOptions {
 
   emitTsDeclaration?: boolean;
 
-  preserveModules?: boolean
+  preserveModules?: boolean;
 }
 
 export interface GenRollupConfigOptionsWithSingleFormat
@@ -79,27 +81,46 @@ export const config: (opt: GenRollupConfigOptions) => RollupOptions = opt => {
   const genOutput: (
     c: GenRollupConfigOptionsWithSingleFormat,
   ) => OutputOptions = c =>
-      typeof output === "function" ? output(c) : { format: c.format, ...output };
+    typeof output === "function" ? output(c) : { format: c.format, ...output };
+
+  const outputs = Array.isArray(format)
+    ? format.map(f => genOutput({ ...opt, format: f }))
+    : genOutput(opt as GenRollupConfigOptionsWithSingleFormat);
+
+  const globalsList = Array.isArray(outputs)
+    ? outputs.map(op => op.globals)
+    : [outputs.globals];
+  const globals = bundle
+    ? // when `output.bundle` is true,
+      // `output.globals` must be an object if specified
+      // ( or objects with same value if there are multiple outputs )
+      assertSameObject(
+        globalsList,
+        "output.globals must be the same if output is an array",
+      )
+    : assertAllUndefinded(
+        globalsList,
+        "output.globals shound be undefined when output.bundle=false",
+      );
 
   const cfg: RollupOptions = {
     input,
-    output: Array.isArray(format)
-      ? format.map(f => genOutput({ ...opt, format: f }))
-      : genOutput(opt as GenRollupConfigOptionsWithSingleFormat),
+    output: outputs,
     preserveModules,
+    ...(globals ? { external: Object.keys(globals) } : {}),
     plugins: [
       // if the output is a bundle, then deps are resolved to be included in the output
       // else, the deps are marked as as external modules and won't be included in the output
       bundle
         ? resolve({
-          // https://github.com/rollup/plugins/tree/master/packages/node-resolve
-          mainFields: ["module", "main"],
-        })
+            // https://github.com/rollup/plugins/tree/master/packages/node-resolve
+            mainFields: ["module", "main"],
+          })
         : externals({
-          // https://github.com/Septh/rollup-plugin-node-externals
-          deps: true,
-          peerDeps: true,
-        }),
+            // https://github.com/Septh/rollup-plugin-node-externals
+            deps: true,
+            peerDeps: true,
+          }),
       typescript({
         tsconfig: tsconfigFile,
         tsconfigOverride: {
@@ -109,12 +130,12 @@ export const config: (opt: GenRollupConfigOptions) => RollupOptions = opt => {
       }),
       bundle && commonjs(),
       !esnext &&
-      babel({
-        extensions: [...DEFAULT_EXTENSIONS, ".ts", ".tsx"],
-        exclude: "node_modules/**",
-      }),
+        babel({
+          extensions: [...DEFAULT_EXTENSIONS, ".ts", ".tsx"],
+          exclude: "node_modules/**",
+        }),
       min && terser(),
     ],
   };
-  return cfg
+  return cfg;
 };

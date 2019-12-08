@@ -7,12 +7,15 @@ export type PartialGenOptions = Pick<
 >;
 
 export const OPTION_ESNEXT: PartialGenOptions = {
-  format: "esm", esnext: true, emitTsDeclaration: true,
-  preserveModules: true
+  format: "esm",
+  esnext: true,
+  emitTsDeclaration: true,
+  preserveModules: true,
 };
 
 export const OPTION_MAIN_AND_MODULE: PartialGenOptions = {
-  format: ["esm", "cjs"], preserveModules: true
+  format: ["esm", "cjs"],
+  preserveModules: true,
 };
 
 export const OPTIONS_BROWSER: readonly PartialGenOptions[] = [
