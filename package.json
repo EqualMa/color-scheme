@@ -19,7 +19,8 @@
     }
   },
   "scripts": {
-    "build": "lerna run build"
+    "build": "lerna run build",
+    "lint-all": "prettier --check '**/*.{yml,yaml,json,md,html}'"
   },
   "lint-staged": {
     "*.{yml,yaml,json,md,html}": [

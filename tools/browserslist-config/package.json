@@ -10,6 +10,8 @@
   "scripts": {
     "precommit": "lint-staged",
     "gen": "node gen.js && yarn run format index.js",
+    "lint-all": "prettier --check './**/*.js'",
+    "lint-all:fix": "prettier --write './**/*.js'",
     "format": "prettier --write"
   },
   "devDependencies": {
