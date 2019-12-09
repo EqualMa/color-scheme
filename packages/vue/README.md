@@ -1,43 +1,46 @@
 # VueColorSchemePlugin
 
-Your plugin description...
-
 ## Installation
 
 ### 1. Install
+
 ```
-yarn add vue-color-scheme
+yarn add @color-scheme/vue
 # or
-npm i vue-color-scheme --save
+npm i @color-scheme/vue --save
 ```
 
 ### 2. Plug-in
-```js
-import VueColorSchemePlugin from 'vue-color-scheme'
 
-Vue.use(VueColorSchemePlugin)
+```js
+import VueColorSchemePlugin from "vue-color-scheme";
+
+Vue.use(VueColorSchemePlugin);
 
 new Vue({
   // your vue config
-  colorSchemeSettings: new VueColorSchemePlugin(),
-})
+  colorScheme: {
+    // ...
+  },
+});
 ```
 
 ### 3. Use in your components
 
 ```vue
 <template>
-  <vue-color-scheme />
+  <!-- your template -->
 </template>
 
 <script>
-  export default {
-    async created() {
-      console.log(this.$colorScheme);
-    },
-  };
+export default {
+  async created() {
+    console.log(this.$colorScheme);
+  },
+};
 </script>
 ```
 
 ## License
+
 MIT
