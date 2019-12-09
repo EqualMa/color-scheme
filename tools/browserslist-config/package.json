@@ -2,6 +2,7 @@
   "name": "@color-scheme/browserslist-config",
   "version": "1.0.0",
   "description": "browserslist for @color-scheme projects",
+  "private": true,
   "main": "index.js",
   "repository": "https://github.com/Equal/color-scheme/packages/browserslist-config",
   "author": "Equal Ma",
